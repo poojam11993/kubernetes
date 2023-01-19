@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: tomcat-jenkins
+spec:
+  containers:
+  - name: mytomcat
+    image: puja15/tomcatnew:latest
+  - name: myenkins
+    image: nginx:1.14.2
