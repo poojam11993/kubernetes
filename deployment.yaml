@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat
+  namespace: dev-namespace
+spec:
+  replicas: 2
+  selector:
+   matchLabels:
+     app: tomcat
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      name: tomcat-jenkins
+      labels:
+        app: tomcat
+    spec:
+      nodeSelector:
+        size: large
+      #tolerations:
+      # - key: "colour"
+      #operator: "Equal"
+      # value: "red"
+      # effect: "NoSchedule" 
+      containers:
+        - name: tomcat
+          image: krishna123456/tomcat:1.11.111
+          resources:
+            limits:
+              cpu: "1"
+              memory: 256Mi
+            requests:
+              cpu: 500m
+              memory: 128Mi  
