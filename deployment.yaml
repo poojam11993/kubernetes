@@ -4,7 +4,7 @@ metadata:
   name: tomcat
   namespace: dev-namespace
 spec:
-  replicas: 2
+  replicas: 3
   selector:
    matchLabels:
      app: tomcat
@@ -19,8 +19,17 @@ spec:
       labels:
         app: tomcat
     spec:
-      nodeSelector:
-        size: large
+      spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+                 - key: size
+                   operator: In
+                   values:
+                     - small
+                     - large
       #tolerations:
       # - key: "colour"
       #operator: "Equal"
