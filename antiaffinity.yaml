@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat
+  namespace: dev-namespace
+spec:
+  replicas: 3
+  selector:
+   matchLabels:
+     app: tomcat
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      name: tomcat-jenkins
+      labels:
+        app: tomcat
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+               matchExpressions:
+               - key: app
+                 operator: In
+                 values:
+                 - tomcat
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: tomcat     
+          image: krishna123456/tomcat:1.11.111 
